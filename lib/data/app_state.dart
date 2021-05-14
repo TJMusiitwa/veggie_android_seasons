@@ -1,9 +1,9 @@
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:veggie_android_seasons/data/local_veggie_data.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 
-class AppState extends Model {
-  List<Veggie> _veggies;
+class AppState extends ChangeNotifier {
+  final List<Veggie> _veggies;
 
   AppState() : _veggies = LocalVeggieProvider.veggies;
 
@@ -13,13 +13,13 @@ class AppState extends Model {
 
 //List all available vegetables for the current season
   List<Veggie> get availableVeggies {
-    Season currentSeason = _getSeasonForDate(DateTime.now());
+    var currentSeason = _getSeasonForDate(DateTime.now());
     return _veggies.where((v) => v.seasons.contains(currentSeason)).toList();
   }
 
 //List vegetables that are out of season
   List<Veggie> get unavailableVeggies {
-    Season currentSeason = _getSeasonForDate(DateTime.now());
+    var currentSeason = _getSeasonForDate(DateTime.now());
     return _veggies.where((v) => !v.seasons.contains(currentSeason)).toList();
   }
 
@@ -36,7 +36,7 @@ class AppState extends Model {
 
   //Set a favourite vegetable
   void setFavourite(int id, bool isFavourite) {
-    Veggie veggie = getVeggie(id);
+    var veggie = getVeggie(id);
     veggie.isFavorite = isFavourite;
     notifyListeners();
   }

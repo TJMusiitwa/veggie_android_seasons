@@ -21,10 +21,10 @@ class SettingsIcon extends StatelessWidget {
   final IconData icon;
 
   const SettingsIcon(
-      {Key key,
+      {Key? key,
       this.backgroundColor = Colors.black,
       this.foregroundColor = Colors.white,
-      this.icon})
+      required this.icon})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,13 @@ class SettingsIcon extends StatelessWidget {
 }
 
 class SettingsItem extends StatefulWidget {
-  final String label, subtitle;
-  final Widget icon, content;
-  final SettingsItemCallback onPress;
+  final String? label;
+  final String? subtitle;
+  final Widget? icon, content;
+  final SettingsItemCallback? onPress;
 
   const SettingsItem(
-      {Key key,
+      {Key? key,
       this.label,
       this.subtitle,
       this.icon,
@@ -73,7 +74,7 @@ class _SettingsItemState extends State<SettingsItem> {
             setState(() {
               pressed = true;
             });
-            await widget.onPress();
+            await widget.onPress!();
             Future.delayed(Duration(milliseconds: 150), () {
               setState(() {
                 pressed = false;
@@ -82,9 +83,11 @@ class _SettingsItemState extends State<SettingsItem> {
           }
         },
         child: SizedBox(
+          // ignore: unnecessary_null_comparison
           height: widget.subtitle == null ? 44 : 57,
           child: Row(
             children: <Widget>[
+              // ignore: unnecessary_null_comparison
               if (widget.icon != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 15, bottom: 2),
@@ -97,6 +100,7 @@ class _SettingsItemState extends State<SettingsItem> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15),
+                  // ignore: unnecessary_null_comparison
                   child: widget.subtitle != null
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,12 +108,12 @@ class _SettingsItemState extends State<SettingsItem> {
                             SizedBox(
                               height: 8.5,
                             ),
-                            Text(widget.label),
+                            Text(widget.label!),
                             SizedBox(
                               height: 4,
                             ),
                             Text(
-                              widget.subtitle,
+                              widget.subtitle!,
                               style: TextStyle(
                                 fontSize: 12,
                                 letterSpacing: -0.2,
@@ -119,13 +123,13 @@ class _SettingsItemState extends State<SettingsItem> {
                         )
                       : Padding(
                           padding: EdgeInsets.only(top: 1.5),
-                          child: Text(widget.label),
+                          child: Text(widget.label!),
                         ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 11),
-                child: widget.content ?? Container(),
+                child: widget.content,
               ),
             ],
           ),

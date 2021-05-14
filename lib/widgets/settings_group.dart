@@ -5,7 +5,7 @@ import 'package:veggie_android_seasons/widgets/settings_item.dart';
 class SettingsGroupHeader extends StatelessWidget {
   final String title;
 
-  const SettingsGroupHeader({Key key, this.title}) : super(key: key);
+  const SettingsGroupHeader({Key? key, required this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +25,7 @@ class SettingsGroupHeader extends StatelessWidget {
 class SettingsGroupFooter extends StatelessWidget {
   final String title;
 
-  const SettingsGroupFooter({Key key, this.title}) : super(key: key);
+  const SettingsGroupFooter({Key? key, required this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,16 +47,16 @@ class SettingsGroupFooter extends StatelessWidget {
 }
 
 class SettingsGroup extends StatelessWidget {
-  final Widget header, footer;
+  final Widget? header, footer;
   final List<SettingsItem> items;
 
-  const SettingsGroup({Key key, this.header, this.footer, this.items})
+  const SettingsGroup({Key? key, this.header, this.footer, required this.items})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     final dividedItems = <Widget>[items[0]];
 
-    for (int i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       dividedItems.add(Container(
         color: VeggieStyles.settingsLineation,
         height: 0.3,
@@ -65,12 +65,14 @@ class SettingsGroup extends StatelessWidget {
     }
     return Padding(
       padding: EdgeInsets.only(
+        // ignore: unnecessary_null_comparison
         top: header == null ? 35 : 22,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (header != null) header,
+          // ignore: unnecessary_null_comparison
+          if (header != null) header!,
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -90,7 +92,8 @@ class SettingsGroup extends StatelessWidget {
               children: dividedItems,
             ),
           ),
-          if (footer != null) footer,
+          // ignore: unnecessary_null_comparison
+          if (footer != null) footer!,
         ],
       ),
     );

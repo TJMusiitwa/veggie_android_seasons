@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var _currentPage = 0;
 
-  var _pages = [
+  final _pages = [
     VeggieListScreen(),
     FavouritesScreen(),
     SearchScreen(),
@@ -33,14 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: 'Home',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'My Garden'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.book), title: Text('My Garden')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search), title: Text('Search')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('Settings')),
+              icon: Icon(Icons.settings), label: 'Settings'),
         ],
         currentIndex: _currentPage,
         fixedColor: Colors.red,

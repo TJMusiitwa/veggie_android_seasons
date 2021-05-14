@@ -8,7 +8,11 @@ class ZoomClipAssetImage extends StatelessWidget {
   final String imageAsset;
 
   const ZoomClipAssetImage(
-      {Key key, this.zoom, this.height, this.width, this.imageAsset})
+      {Key? key,
+      required this.zoom,
+      required this.height,
+      required this.width,
+      required this.imageAsset})
       : super(key: key);
 
   @override
@@ -32,12 +36,12 @@ class ZoomClipAssetImage extends StatelessWidget {
 class VeggieHeadline extends StatelessWidget {
   final Veggie veggie;
 
-  const VeggieHeadline({Key key, this.veggie}) : super(key: key);
+  const VeggieHeadline({Key? key, required this.veggie}) : super(key: key);
 
   List<Widget> _buildSeasonDots(List<Season> seasons) {
-    List<Widget> widgets = <Widget>[];
+    var widgets = <Widget>[];
 
-    for (Season season in seasons) {
+    for (var season in seasons) {
       widgets.add(SizedBox(
         width: 4,
       ));

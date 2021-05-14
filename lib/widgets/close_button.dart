@@ -6,8 +6,8 @@ import 'package:veggie_android_seasons/veggie_styles.dart';
 /// Partially overlays and then blurs its child's background.
 class FrostedBox extends StatelessWidget {
   const FrostedBox({
-    this.child,
-    Key key,
+    required this.child,
+    Key? key,
   }) : super(key: key);
 
   final Widget child;
@@ -29,11 +29,15 @@ class FrostedBox extends StatelessWidget {
 /// An Icon that implicitly animates changes to its color.
 class ColorChangingIcon extends ImplicitlyAnimatedWidget {
   final Color color;
-  final IconData icon;
-  final double size;
+  final IconData? icon;
+  final double? size;
 
   ColorChangingIcon(
-      {this.color = Colors.black, this.icon, this.size, Duration duration});
+      {this.color = Colors.black,
+      this.icon,
+      this.size,
+      required Duration duration})
+      : super(duration: duration);
 
   @override
   _ColorChangingIconState createState() => _ColorChangingIconState();
@@ -41,11 +45,11 @@ class ColorChangingIcon extends ImplicitlyAnimatedWidget {
 
 class _ColorChangingIconState
     extends AnimatedWidgetBaseState<ColorChangingIcon> {
-  ColorTween _colorTween;
+  late ColorTween _colorTween;
   @override
   Widget build(BuildContext context) {
     return Icon(widget.icon,
-        size: widget.size, color: _colorTween?.evaluate(animation));
+        size: widget.size, color: _colorTween.evaluate(animation));
   }
 
   @override
@@ -62,7 +66,7 @@ class _ColorChangingIconState
 class CloseButton extends StatefulWidget {
   final VoidCallback onPressed;
 
-  const CloseButton({Key key, this.onPressed}) : super(key: key);
+  const CloseButton({Key? key, required this.onPressed}) : super(key: key);
   @override
   _CloseButtonState createState() => _CloseButtonState();
 }

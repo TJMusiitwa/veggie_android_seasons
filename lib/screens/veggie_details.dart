@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/data/veggie_preferences.dart';
@@ -11,14 +11,15 @@ class ServingInfoChart extends StatelessWidget {
   final Veggie veggie;
   final VeggiePrefs veggiePrefs;
 
-  const ServingInfoChart({Key key, this.veggie, this.veggiePrefs})
+  const ServingInfoChart(
+      {Key? key, required this.veggie, required this.veggiePrefs})
       : super(key: key);
 
   Widget _buildVitaminText(int standardPercentage, Future<int> targetCalories) {
     return FutureBuilder<int>(
       future: targetCalories,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final target = snapshot?.data ?? 2000;
+        final target = snapshot.data ?? 2000;
         final percent = standardPercentage * 2000 ~/ target;
         return Text(
           '$percent% DV',
@@ -126,8 +127,8 @@ class ServingInfoChart extends StatelessWidget {
                 future: veggiePrefs.desiredCalories,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   return Text(
-                    'Percent daily values based on a diet of ' +
-                        '${snapshot?.data ?? '2,000'} calories.',
+                    'Percent daily values based on a diet of '
+                    '${snapshot.data ?? '2,000'} calories.',
                     style: VeggieStyles.detailsServingNoteText,
                   );
                 },
@@ -143,11 +144,11 @@ class ServingInfoChart extends StatelessWidget {
 class InfoView extends StatelessWidget {
   final int id;
 
-  const InfoView({Key key, this.id}) : super(key: key);
+  const InfoView({Key? key, required this.id}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final appState = ScopedModel.of<AppState>(context, rebuildOnChange: true);
-    final prefs = ScopedModel.of<VeggiePrefs>(context, rebuildOnChange: true);
+    final appState = Provider.of<AppState>(context);
+    final prefs = Provider.of<VeggiePrefs>(context);
     final veggie = appState.getVeggie(id);
     return Padding(
       padding: EdgeInsets.all(24),
@@ -160,7 +161,7 @@ class InfoView extends StatelessWidget {
               FutureBuilder(
                 future: prefs.preferredCategories,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Text(veggie.categoryName.toUpperCase(),
+                  return Text(veggie.categoryName!.toUpperCase(),
                       style: (snapshot.hasData &&
                               snapshot.data.contains(veggie.category))
                           ? VeggieStyles.detailsPreferredCategoryText
@@ -173,7 +174,7 @@ class InfoView extends StatelessWidget {
                   width: 12,
                 ),
                 Padding(
-                  padding: VeggieStyles.seasonIconPadding[season],
+                  padding: VeggieStyles.seasonIconPadding[season]!,
                   child: Icon(
                     VeggieStyles.seasonIconData[season],
                     color: VeggieStyles.seasonColors[season],
@@ -221,14 +222,14 @@ class InfoView extends StatelessWidget {
 class VeggieDetails extends StatefulWidget {
   final int id;
 
-  const VeggieDetails({Key key, this.id}) : super(key: key);
+  const VeggieDetails({Key? key, required this.id}) : super(key: key);
   @override
   _VeggieDetailsState createState() => _VeggieDetailsState();
 }
 
 class _VeggieDetailsState extends State<VeggieDetails> {
   int _selectedViewIndex = 0;
-  List<bool> isSelected;
+  late List<bool> isSelected;
   @override
   void initState() {
     super.initState();
@@ -239,7 +240,7 @@ class _VeggieDetailsState extends State<VeggieDetails> {
     final veggie = model.getVeggie(widget.id);
 
     return SizedBox(
-      height: 200,
+      height: MediaQuery.of(context).size.height / 3,
       child: Stack(
         children: <Widget>[
           Positioned(
@@ -265,45 +266,43 @@ class _VeggieDetailsState extends State<VeggieDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = ScopedModel.of<AppState>(context, rebuildOnChange: true);
+    final appState = Provider.of<AppState>(context);
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _buildHeader(context, appState),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  SizedBox(
-                    height: 25,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _buildHeader(context, appState),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: ToggleButtons(
+                    isSelected: isSelected,
+                    onPressed: (value) {
+                      setState(() {
+                        for (var i = 0; i < isSelected.length; i++) {
+                          isSelected[i] = i == value;
+                        }
+                        _selectedViewIndex = value;
+                      });
+                    },
+                    children: <Widget>[
+                      Text('Facts & Info'),
+                      Text('Trivia'),
+                    ],
                   ),
-                  Center(
-                    child: ToggleButtons(
-                      children: <Widget>[
-                        Text('Facts & Info'),
-                        Text('Trivia'),
-                      ],
-                      isSelected: isSelected,
-                      onPressed: (value) {
-                        setState(() {
-                          for (int i = 0; i < isSelected.length; i++) {
-                            isSelected[i] = i == value;
-                          }
-                          _selectedViewIndex = value;
-                        });
-                      },
-                    ),
-                  ),
-                  _selectedViewIndex == 0
-                      ? InfoView(id: widget.id)
-                      : TriviaView(widget.id)
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                _selectedViewIndex == 0
+                    ? InfoView(id: widget.id)
+                    : TriviaView(widget.id)
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

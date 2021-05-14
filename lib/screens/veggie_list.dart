@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/data/veggie_preferences.dart';
@@ -10,9 +10,9 @@ import 'package:veggie_android_seasons/widgets/veggie_card.dart';
 class VeggieListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String dateString = DateFormat("MMMM y").format(DateTime.now());
-    final appState = ScopedModel.of<AppState>(context, rebuildOnChange: true);
-    final prefs = ScopedModel.of<VeggiePrefs>(context, rebuildOnChange: true);
+    var dateString = DateFormat('MMMM y').format(DateTime.now());
+    final appState = Provider.of<AppState>(context);
+    final prefs = Provider.of<VeggiePrefs>(context);
     return DecoratedBox(
       decoration: BoxDecoration(color: Color(0xffffffff)),
       child: ListView.builder(
@@ -38,7 +38,7 @@ class VeggieListScreen extends StatelessWidget {
               child: Text('Not in Season', style: VeggieStyles.headlineText),
             );
           } else {
-            int relativeIndex = index - (appState.availableVeggies.length + 2);
+            var relativeIndex = index - (appState.availableVeggies.length + 2);
             return _generateVeggieRow(
                 appState.unavailableVeggies[relativeIndex], prefs,
                 inSeason: false);
@@ -55,7 +55,7 @@ class VeggieListScreen extends StatelessWidget {
       child: FutureBuilder<Set<VeggieCategory>>(
         future: veggiePrefs.preferredCategories,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          final data = snapshot.data ?? Set<VeggieCategory>();
+          final data = snapshot.data ?? <VeggieCategory>{};
           return VeggieCard(
               veggie: veggie,
               isInSeason: inSeason,

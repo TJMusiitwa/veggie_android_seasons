@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart' show CupertinoSearchTextField;
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
-import 'package:veggie_android_seasons/widgets/search_bar.dart';
+//import 'package:veggie_android_seasons/widgets/search_bar.dart';
 import 'package:veggie_android_seasons/widgets/veggie_headline.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -28,10 +29,10 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
-  Widget _creatSearchBox() {
+  Widget _createSearchBox() {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: SearchBar(
+      child: CupertinoSearchTextField(
         controller: controller,
         focusNode: focusNode,
       ),
@@ -66,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final model = ScopedModel.of<AppState>(context, rebuildOnChange: true);
+    final model = Provider.of<AppState>(context);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -75,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: SafeArea(
         child: Column(
           children: <Widget>[
-            _creatSearchBox(),
+            _createSearchBox(),
             Expanded(
               child: _buildSearchResults(model.searchVeggies(terms)),
             )

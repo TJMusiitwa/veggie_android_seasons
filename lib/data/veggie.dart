@@ -80,18 +80,18 @@ class Veggie {
   final List<Trivia> trivia;
 
   Veggie(
-      {this.id,
-      this.name,
-      this.imageAssetPath,
-      this.category,
-      this.shortDescription,
-      this.accentColor,
-      this.seasons,
-      this.vitaminAPercentage,
-      this.vitaminCPercentage,
-      this.servingSize,
-      this.caloriesPerServing,
-      this.trivia,
+      {required this.id,
+      required this.name,
+      required this.imageAssetPath,
+      required this.category,
+      required this.shortDescription,
+      required this.accentColor,
+      required this.seasons,
+      required this.vitaminAPercentage,
+      required this.vitaminCPercentage,
+      required this.servingSize,
+      required this.caloriesPerServing,
+      required this.trivia,
       this.isFavorite = false});
-  String get categoryName => veggieCategoryNames[category];
+  String? get categoryName => veggieCategoryNames[category];
 }
