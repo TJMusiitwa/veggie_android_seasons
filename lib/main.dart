@@ -7,6 +7,7 @@ import 'package:veggie_android_seasons/screens/home_screen.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
