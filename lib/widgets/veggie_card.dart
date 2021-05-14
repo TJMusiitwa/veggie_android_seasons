@@ -6,11 +6,12 @@ import 'package:veggie_android_seasons/screens/veggie_details.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 
 class FrostyBackground extends StatelessWidget {
-  final Color color;
+  final Color? color;
   final double intensity;
   final Widget child;
 
-  const FrostyBackground({Key key, this.color, this.intensity = 25, this.child})
+  const FrostyBackground(
+      {Key? key, this.color, this.intensity = 25, required this.child})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -42,21 +43,15 @@ class PressableCard extends StatefulWidget {
   final Duration duration;
 
   const PressableCard(
-      {Key key,
-      this.onPressed,
+      {Key? key,
+      required this.onPressed,
       this.borderRadius = const BorderRadius.all(Radius.circular(5)),
       this.upElevation = 2,
       this.downElevation = 0,
       this.shadowColor = Colors.black,
       this.duration = const Duration(milliseconds: 100),
-      this.child})
-      : assert(child != null),
-        assert(borderRadius != null),
-        assert(upElevation != null),
-        assert(downElevation != null),
-        assert(shadowColor != null),
-        assert(duration != null),
-        super(key: key);
+      required this.child})
+      : super(key: key);
   @override
   _PressableCardState createState() => _PressableCardState();
 }
@@ -70,6 +65,7 @@ class _PressableCardState extends State<PressableCard> {
         setState(() {
           cardIsDown = false;
         });
+        // ignore: unnecessary_null_comparison
         if (widget.onPressed != null) {
           widget.onPressed();
         }
@@ -101,10 +97,13 @@ class VeggieCard extends StatelessWidget {
 
   /// Whether [veggie] falls into one of user's preferred [VeggieCategory]s
 
-  final bool isPreferredCategory;
+  final bool? isPreferredCategory;
 
   const VeggieCard(
-      {Key key, this.veggie, this.isInSeason, this.isPreferredCategory})
+      {Key? key,
+      required this.veggie,
+      required this.isInSeason,
+      this.isPreferredCategory})
       : super(key: key);
 
   Widget _buildDetails() {

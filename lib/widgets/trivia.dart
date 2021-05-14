@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
@@ -23,10 +23,10 @@ enum PlayerStatus {
 
 class _TriviaViewState extends State<TriviaView> {
   /// Current app state. This is used to fetch veggie data.
-  AppState appState;
+  late AppState appState;
 
   /// The veggie trivia about which to show.
-  Veggie veggie;
+  late Veggie veggie;
 
   /// Index of the current trivia question.
   int triviaIndex = 0;
@@ -46,8 +46,7 @@ class _TriviaViewState extends State<TriviaView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final newAppState =
-        ScopedModel.of<AppState>(context, rebuildOnChange: true);
+    final newAppState = Provider.of<AppState>(context);
 
     setState(() {
       appState = newAppState;
@@ -144,9 +143,9 @@ class _TriviaViewState extends State<TriviaView> {
             style: VeggieStyles.triviaFinishedText,
           ),
           SizedBox(height: 16),
-          RaisedButton(
-            child: Text('Try Again'),
+          ElevatedButton(
             onPressed: () => _resetGame(),
+            child: Text('Try Again'),
           ),
         ],
       ),
@@ -165,13 +164,15 @@ class _TriviaViewState extends State<TriviaView> {
           for (int i = 0; i < currentTrivia.answers.length; i++)
             Padding(
               padding: const EdgeInsets.all(8),
-              child: RaisedButton(
-                color: Colors.blueAccent,
+              child: ElevatedButton(
+                onPressed: () => _processAnswer(i),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                ),
                 child: Text(
                   currentTrivia.answers[i],
                   textAlign: TextAlign.center,
                 ),
-                onPressed: () => _processAnswer(i),
               ),
             ),
         ],
@@ -190,12 +191,12 @@ class _TriviaViewState extends State<TriviaView> {
               ? 'That\'s right!'
               : 'Sorry, that wasn\'t the right answer.'),
           SizedBox(height: 16),
-          RaisedButton(
-            child: Text('Next Question'),
+          ElevatedButton(
             onPressed: () => setState(() {
               triviaIndex++;
               status = PlayerStatus.readyToAnswer;
             }),
+            child: Text('Next Question'),
           ),
         ],
       ),

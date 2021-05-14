@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/data/veggie_preferences.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
@@ -13,7 +13,7 @@ class CalorieSettingsScreen extends StatelessWidget {
   static const step = 200;
   @override
   Widget build(BuildContext context) {
-    final model = ScopedModel.of<VeggiePrefs>(context, rebuildOnChange: true);
+    final model = Provider.of<VeggiePrefs>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Calorie Settings'),
@@ -25,21 +25,23 @@ class CalorieSettingsScreen extends StatelessWidget {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               final steps = <SettingsItem>[];
 
-              for (int cals = max; cals < min; cals += step) {
+              for (var cals = max; cals < min; cals += step) {
                 steps.add(
                   SettingsItem(
-                    label: cals.toString(),
-                    icon: SettingsIcon(
-                      icon: Icons.check,
-                      foregroundColor: snapshot.hasData && snapshot.data == cals
-                          ? Colors.blueAccent
-                          : VeggieStyles.transparentColor,
-                      backgroundColor: VeggieStyles.transparentColor,
-                    ),
-                    onPress: snapshot.hasData
-                        ? () => model.setDesiredCalories(cals)
-                        : null,
-                  ),
+                      label: cals.toString(),
+                      icon: SettingsIcon(
+                        icon: Icons.check,
+                        foregroundColor:
+                            snapshot.hasData && snapshot.data == cals
+                                ? Colors.blueAccent
+                                : VeggieStyles.transparentColor,
+                        backgroundColor: VeggieStyles.transparentColor,
+                      ),
+                      onPress: () {
+                        if (snapshot.hasData) {
+                          model.setDesiredCalories(cals);
+                        }
+                      }),
                 );
               }
               return SettingsGroup(
@@ -59,7 +61,7 @@ class CalorieSettingsScreen extends StatelessWidget {
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final prefs = ScopedModel.of<VeggiePrefs>(context, rebuildOnChange: true);
+    final prefs = Provider.of<VeggiePrefs>(context);
     return Container(
       color: VeggieStyles.scaffoldBackground,
       child: CustomScrollView(
@@ -131,7 +133,7 @@ class SettingsScreen extends StatelessWidget {
 class VeggieCategorySettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final model = ScopedModel.of<VeggiePrefs>(context, rebuildOnChange: true);
+    final model = Provider.of<VeggiePrefs>(context);
     final currentPrefs = model.preferredCategories;
     return Scaffold(
       appBar: AppBar(
@@ -165,7 +167,7 @@ class VeggieCategorySettingsScreen extends StatelessWidget {
             }
 
             items.add(SettingsItem(
-              label: veggieCategoryNames[category],
+              label: veggieCategoryNames[category]!,
               content: toggle,
             ));
           }

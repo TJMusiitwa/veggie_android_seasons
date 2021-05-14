@@ -1,19 +1,20 @@
 import 'dart:async';
-import 'package:scoped_model/scoped_model.dart';
+
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 
-class VeggiePrefs extends Model {
+class VeggiePrefs extends ChangeNotifier {
 //Keys to use with shared preferences
   static const _caloriesKey = 'calories';
   static const _preferredCategoriesKey = 'preferredCategories';
 
   // Indicates whether a call to [_loadFromSharedPrefs] is in progress;
-  Future<void> _loading;
+  late Future<void> _loading;
 
   int _desiredCalories = 2000;
 
-  Set<VeggieCategory> _preferredCategories = Set<VeggieCategory>();
+  final Set<VeggieCategory> _preferredCategories = <VeggieCategory>{};
 
   Future<int> get desiredCalories async {
     await _loading;
@@ -66,6 +67,7 @@ class VeggiePrefs extends Model {
     if (names != null && names.isNotEmpty) {
       for (final name in names.split(',')) {
         final index = int.tryParse(name) ?? -1;
+        // ignore: unnecessary_null_comparison
         if (VeggieCategory.values[index] != null) {
           _preferredCategories.add(VeggieCategory.values[index]);
         }

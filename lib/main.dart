@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie_preferences.dart';
 import 'package:veggie_android_seasons/screens/home_screen.dart';
@@ -13,22 +13,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<AppState>(
-      model: AppState(),
-      child: ScopedModel<VeggiePrefs>(
-        model: VeggiePrefs()..load(),
-        child: MaterialApp(
-          title: 'Veggie Android Seasons',
-          theme: ThemeData(
-            primarySwatch: Colors.red,
-            scaffoldBackgroundColor: VeggieStyles.scaffoldBackground,
-            brightness: Brightness.light,
-          ),
-          home: HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: AppState()),
+        ChangeNotifierProvider(create: (_) => VeggiePrefs()..load())
+      ],
+      child: MaterialApp(
+        title: 'Veggie Android Seasons',
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+          scaffoldBackgroundColor: VeggieStyles.scaffoldBackground,
+          brightness: Brightness.light,
         ),
+        home: HomeScreen(),
       ),
     );
   }
