@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart'
+    show CupertinoSegmentedControl, CupertinoSlidingSegmentedControl;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -275,27 +279,31 @@ class _VeggieDetailsState extends State<VeggieDetails> {
           _buildHeader(context, appState),
           Expanded(
             child: ListView(
+              padding: const EdgeInsets.only(left: 20, right: 20),
               children: <Widget>[
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                Center(
-                  child: ToggleButtons(
-                    isSelected: isSelected,
-                    onPressed: (value) {
-                      setState(() {
-                        for (var i = 0; i < isSelected.length; i++) {
-                          isSelected[i] = i == value;
-                        }
-                        _selectedViewIndex = value;
-                      });
-                    },
-                    children: <Widget>[
-                      Text('Facts & Info'),
-                      Text('Trivia'),
-                    ],
-                  ),
-                ),
+                Platform.isIOS
+                    ? CupertinoSlidingSegmentedControl(
+                        children: {
+                          0: Text('Facts & Info'),
+                          1: Text('Trivia'),
+                        },
+                        thumbColor: Theme.of(context).primaryColorLight,
+                        groupValue: _selectedViewIndex,
+                        onValueChanged: (value) =>
+                            setState(() => _selectedViewIndex = value as int),
+                      )
+                    : CupertinoSegmentedControl(
+                        children: {
+                          0: Text('Facts & Info'),
+                          1: Text('Trivia'),
+                        },
+                        groupValue: _selectedViewIndex,
+                        onValueChanged: (value) =>
+                            setState(() => _selectedViewIndex = value as int),
+                      ),
                 _selectedViewIndex == 0
                     ? InfoView(id: widget.id)
                     : TriviaView(widget.id)
