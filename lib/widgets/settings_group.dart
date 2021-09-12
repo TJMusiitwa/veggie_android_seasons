@@ -9,10 +9,10 @@ class SettingsGroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 15, right: 15, bottom: 6),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 6),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.grey,
           fontSize: 13.5,
           letterSpacing: -0.5,
@@ -29,14 +29,14 @@ class SettingsGroupFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 15,
         right: 15,
         top: 7.5,
       ),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: VeggieStyles.settingsGroupSubtitle,
           fontSize: 13,
           letterSpacing: -0.08,
@@ -74,14 +74,14 @@ class SettingsGroup extends StatelessWidget {
           // ignore: unnecessary_null_comparison
           if (header != null) header!,
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               border: Border(
-                top: const BorderSide(
+                top: BorderSide(
                   color: VeggieStyles.settingsLineation,
                   width: 0,
                 ),
-                bottom: const BorderSide(
+                bottom: BorderSide(
                   color: VeggieStyles.settingsLineation,
                   width: 0,
                 ),

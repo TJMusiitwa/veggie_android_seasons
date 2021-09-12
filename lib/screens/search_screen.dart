@@ -41,9 +41,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildSearchResults(List<Veggie> veggies) {
     if (veggies.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: Text(
             'No veggies matching your search terms were found.',
             style: VeggieStyles.headlineDescription,
@@ -56,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: veggies.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
-          padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
           child: VeggieHeadline(
             veggie: veggies[index],
           ),
@@ -70,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final model = Provider.of<AppState>(context);
 
     return DecoratedBox(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: VeggieStyles.scaffoldBackground,
       ),
       child: SafeArea(

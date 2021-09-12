@@ -37,10 +37,10 @@ class ServingInfoChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      SizedBox(
+      const SizedBox(
         height: 16,
       ),
-      Align(
+      const Align(
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: EdgeInsets.only(left: 9, bottom: 4),
@@ -52,14 +52,14 @@ class ServingInfoChart extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: VeggieStyles.servingInfoBorderColor),
         ),
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
             Table(
               children: [
                 TableRow(
                   children: [
-                    TableCell(
+                    const TableCell(
                       child: Text(
                         'Serving size:',
                         style: VeggieStyles.detailsServingLabelText,
@@ -76,7 +76,7 @@ class ServingInfoChart extends StatelessWidget {
                 ),
                 TableRow(
                   children: [
-                    TableCell(
+                    const TableCell(
                       child: Text(
                         'Calories:',
                         style: VeggieStyles.detailsServingLabelText,
@@ -93,7 +93,7 @@ class ServingInfoChart extends StatelessWidget {
                 ),
                 TableRow(
                   children: [
-                    TableCell(
+                    const TableCell(
                       child: Text(
                         'Vitamin A:',
                         style: VeggieStyles.detailsServingLabelText,
@@ -109,7 +109,7 @@ class ServingInfoChart extends StatelessWidget {
                 ),
                 TableRow(
                   children: [
-                    TableCell(
+                    const TableCell(
                       child: Text(
                         'Vitamin C:',
                         style: VeggieStyles.detailsServingLabelText,
@@ -126,7 +126,7 @@ class ServingInfoChart extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: 16),
               child: FutureBuilder(
                 future: veggiePrefs.desiredCalories,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -155,7 +155,7 @@ class InfoView extends StatelessWidget {
     final prefs = Provider.of<VeggiePrefs>(context);
     final veggie = appState.getVeggie(id);
     return Padding(
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -172,9 +172,9 @@ class InfoView extends StatelessWidget {
                           : VeggieStyles.detailsCategoryText);
                 },
               ),
-              Spacer(),
+              const Spacer(),
               for (Season season in veggie.seasons) ...[
-                SizedBox(
+                const SizedBox(
                   width: 12,
                 ),
                 Padding(
@@ -187,14 +187,14 @@ class InfoView extends StatelessWidget {
               ]
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(
             veggie.name,
             style: VeggieStyles.detailsTitleText,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             veggie.shortDescription,
             style: VeggieStyles.detailsDescriptionText,
@@ -203,7 +203,7 @@ class InfoView extends StatelessWidget {
             veggie: veggie,
             veggiePrefs: prefs,
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -213,8 +213,8 @@ class InfoView extends StatelessWidget {
                   appState.setFavourite(id, value);
                 },
               ),
-              SizedBox(width: 8),
-              Text('Save to Garden'),
+              const SizedBox(width: 8),
+              const Text('Save to Garden'),
             ],
           ),
         ],
@@ -258,7 +258,7 @@ class _VeggieDetailsState extends State<VeggieDetails> {
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             top: 16,
             left: 16,
             child: SafeArea(child: CloseButton()),
@@ -281,12 +281,12 @@ class _VeggieDetailsState extends State<VeggieDetails> {
             child: ListView(
               padding: const EdgeInsets.only(left: 20, right: 20),
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Platform.isIOS
                     ? CupertinoSlidingSegmentedControl(
-                        children: {
+                        children: const {
                           0: Text('Facts & Info'),
                           1: Text('Trivia'),
                         },
@@ -296,7 +296,7 @@ class _VeggieDetailsState extends State<VeggieDetails> {
                             setState(() => _selectedViewIndex = value as int),
                       )
                     : CupertinoSegmentedControl(
-                        children: {
+                        children: const {
                           0: Text('Facts & Info'),
                           1: Text('Trivia'),
                         },

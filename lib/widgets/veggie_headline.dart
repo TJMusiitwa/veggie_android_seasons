@@ -42,7 +42,7 @@ class VeggieHeadline extends StatelessWidget {
     var widgets = <Widget>[];
 
     for (var season in seasons) {
-      widgets.add(SizedBox(
+      widgets.add(const SizedBox(
         width: 4,
       ));
       widgets.add(
@@ -81,7 +81,7 @@ class VeggieHeadline extends StatelessWidget {
               width: 72,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Flexible(

@@ -8,7 +8,7 @@ typedef SettingsItemCallback = FutureOr<void> Function();
 class SettingsNavigationIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.arrow_forward,
       color: VeggieStyles.settingsMediumGray,
       size: 21,
@@ -75,7 +75,7 @@ class _SettingsItemState extends State<SettingsItem> {
               pressed = true;
             });
             await widget.onPress!();
-            Future.delayed(Duration(milliseconds: 150), () {
+            Future.delayed(const Duration(milliseconds: 150), () {
               setState(() {
                 pressed = false;
               });
@@ -105,16 +105,16 @@ class _SettingsItemState extends State<SettingsItem> {
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               height: 8.5,
                             ),
                             Text(widget.label!),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
                               widget.subtitle!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 letterSpacing: -0.2,
                               ),
@@ -122,7 +122,7 @@ class _SettingsItemState extends State<SettingsItem> {
                           ],
                         )
                       : Padding(
-                          padding: EdgeInsets.only(top: 1.5),
+                          padding: const EdgeInsets.only(top: 1.5),
                           child: Text(widget.label!),
                         ),
                 ),

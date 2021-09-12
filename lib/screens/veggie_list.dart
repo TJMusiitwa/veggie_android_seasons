@@ -14,7 +14,7 @@ class VeggieListScreen extends StatelessWidget {
     final appState = Provider.of<AppState>(context);
     final prefs = Provider.of<VeggiePrefs>(context);
     return DecoratedBox(
-      decoration: BoxDecoration(color: Color(0xffffffff)),
+      decoration: const BoxDecoration(color: Color(0xffffffff)),
       child: ListView.builder(
         itemCount: appState.allVeggies.length + 2,
         itemBuilder: (BuildContext context, int index) {
@@ -25,7 +25,8 @@ class VeggieListScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(dateString.toUpperCase(), style: VeggieStyles.minorText),
-                  Text('In Season today', style: VeggieStyles.headlineText)
+                  const Text('In Season today',
+                      style: VeggieStyles.headlineText)
                 ],
               ),
             );
@@ -33,8 +34,8 @@ class VeggieListScreen extends StatelessWidget {
             return _generateVeggieRow(
                 appState.availableVeggies[index - 1], prefs);
           } else if (index <= appState.availableVeggies.length + 1) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            return const Padding(
+              padding: EdgeInsets.fromLTRB(16, 24, 16, 16),
               child: Text('Not in Season', style: VeggieStyles.headlineText),
             );
           } else {
@@ -51,7 +52,7 @@ class VeggieListScreen extends StatelessWidget {
   Widget _generateVeggieRow(Veggie veggie, VeggiePrefs veggiePrefs,
       {bool inSeason = true}) {
     return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
       child: FutureBuilder<Set<VeggieCategory>>(
         future: veggiePrefs.preferredCategories,
         builder: (BuildContext context, AsyncSnapshot snapshot) {

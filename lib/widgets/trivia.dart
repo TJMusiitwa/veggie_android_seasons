@@ -107,12 +107,12 @@ class _TriviaViewState extends State<TriviaView> {
       padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          Text(
+          const Text(
             'All done!',
             style: VeggieStyles.triviaFinishedTitleText,
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'You answered',
             style: VeggieStyles.triviaFinishedText,
           ),
@@ -125,8 +125,8 @@ class _TriviaViewState extends State<TriviaView> {
                 '$score',
                 style: VeggieStyles.triviaFinishedBigText,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   ' of ',
                   style: VeggieStyles.triviaFinishedText,
@@ -138,14 +138,14 @@ class _TriviaViewState extends State<TriviaView> {
               ),
             ],
           ),
-          Text(
+          const Text(
             'questions correctly!',
             style: VeggieStyles.triviaFinishedText,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => _resetGame(),
-            child: Text('Try Again'),
+            child: const Text('Try Again'),
           ),
         ],
       ),
@@ -158,9 +158,9 @@ class _TriviaViewState extends State<TriviaView> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(currentTrivia.question),
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
           for (int i = 0; i < currentTrivia.answers.length; i++)
             Padding(
               padding: const EdgeInsets.all(8),
@@ -190,13 +190,13 @@ class _TriviaViewState extends State<TriviaView> {
           Text(status == PlayerStatus.wasCorrect
               ? 'That\'s right!'
               : 'Sorry, that wasn\'t the right answer.'),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => setState(() {
               triviaIndex++;
               status = PlayerStatus.readyToAnswer;
             }),
-            child: Text('Next Question'),
+            child: const Text('Next Question'),
           ),
         ],
       ),

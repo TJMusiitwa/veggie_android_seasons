@@ -18,7 +18,7 @@ class SearchBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Row(
           children: <Widget>[
-            ExcludeSemantics(
+            const ExcludeSemantics(
               child: Icon(
                 Icons.search,
                 color: VeggieStyles.searchIconColor,
@@ -36,7 +36,8 @@ class SearchBar extends StatelessWidget {
               onTap: () {
                 controller.clear();
               },
-              child: Icon(Icons.clear, color: VeggieStyles.searchIconColor),
+              child:
+                  const Icon(Icons.clear, color: VeggieStyles.searchIconColor),
             )
           ],
         ),

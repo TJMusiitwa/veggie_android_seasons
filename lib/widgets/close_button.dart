@@ -17,7 +17,7 @@ class FrostedBox extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: VeggieStyles.frostedBackground,
         ),
         child: child,
@@ -32,7 +32,7 @@ class ColorChangingIcon extends ImplicitlyAnimatedWidget {
   final IconData? icon;
   final double? size;
 
-  ColorChangingIcon(
+  const ColorChangingIcon(
       {this.color = Colors.black,
       this.icon,
       this.size,
@@ -104,7 +104,7 @@ class _CloseButtonState extends State<CloseButton> {
             child: Center(
               child: ColorChangingIcon(
                 icon: Icons.close,
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 color: tapInProgress
                     ? VeggieStyles.closeButtonPressed
                     : VeggieStyles.closeButtonUnpressed,

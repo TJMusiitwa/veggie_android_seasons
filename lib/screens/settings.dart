@@ -16,7 +16,7 @@ class CalorieSettingsScreen extends StatelessWidget {
     final model = Provider.of<VeggiePrefs>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calorie Settings'),
+        title: const Text('Calorie Settings'),
       ),
       body: ListView(
         children: <Widget>[
@@ -46,8 +46,9 @@ class CalorieSettingsScreen extends StatelessWidget {
               }
               return SettingsGroup(
                 items: steps,
-                header: SettingsGroupHeader(title: 'Available calorie levels'),
-                footer: SettingsGroupFooter(
+                header: const SettingsGroupHeader(
+                    title: 'Available calorie levels'),
+                footer: const SettingsGroupFooter(
                     title: 'These are used for serving calculations'),
               );
             },
@@ -84,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
   SettingsItem _buildCaloriesItem(BuildContext context, VeggiePrefs prefs) {
     return SettingsItem(
       label: 'Calorie Target',
-      icon: SettingsIcon(
+      icon: const SettingsIcon(
         backgroundColor: VeggieStyles.iconBlue,
         icon: FontAwesomeIcons.fire,
       ),
@@ -94,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
           return Row(
             children: [
               Text(snapshot.data?.toString() ?? ''),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               SettingsNavigationIndicator(),
             ],
           );
@@ -114,7 +115,7 @@ class SettingsScreen extends StatelessWidget {
     return SettingsItem(
       label: 'Preferred Categories',
       subtitle: 'What types of veggies you prefer!',
-      icon: SettingsIcon(
+      icon: const SettingsIcon(
         backgroundColor: VeggieStyles.iconGold,
         icon: FontAwesomeIcons.thumbsUp,
       ),
@@ -137,7 +138,7 @@ class VeggieCategorySettingsScreen extends StatelessWidget {
     final currentPrefs = model.preferredCategories;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Preferred Categories'),
+        title: const Text('Preferred Categories'),
       ),
       body: FutureBuilder<Set<VeggieCategory>>(
         future: currentPrefs,
@@ -160,7 +161,7 @@ class VeggieCategorySettingsScreen extends StatelessWidget {
                 },
               );
             } else {
-              toggle = Switch(
+              toggle = const Switch(
                 value: false,
                 onChanged: null,
               );

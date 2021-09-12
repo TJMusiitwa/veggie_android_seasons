@@ -23,14 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Veggie Android Seasons'),
+        title: const Text('Veggie Android Seasons'),
         elevation: 0,
       ),
       body: Container(
         child: _pages.elementAt(_currentPage),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

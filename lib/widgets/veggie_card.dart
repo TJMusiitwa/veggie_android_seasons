@@ -108,7 +108,7 @@ class VeggieCard extends StatelessWidget {
 
   Widget _buildDetails() {
     return FrostyBackground(
-      color: Color(0x90ffffff),
+      color: const Color(0x90ffffff),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

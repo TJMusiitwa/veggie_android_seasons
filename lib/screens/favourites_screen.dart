@@ -9,31 +9,29 @@ class FavouritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<AppState>(context);
-    return Container(
-      child: Center(
-          child: model.favouriteVeggies.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    'You haven\'t added any favorite veggies to your garden yet.',
-                    style: VeggieStyles.headlineDescription,
-                    textAlign: TextAlign.center,
+    return Center(
+        child: model.favouriteVeggies.isEmpty
+            ? const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  'You haven\'t added any favorite veggies to your garden yet.',
+                  style: VeggieStyles.headlineDescription,
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 24,
                   ),
-                )
-              : ListView(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 24,
-                    ),
-                    for (Veggie veggie in model.favouriteVeggies)
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16, 0, 16, 24),
-                        child: VeggieHeadline(
-                          veggie: veggie,
-                        ),
-                      )
-                  ],
-                )),
-    );
+                  for (Veggie veggie in model.favouriteVeggies)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                      child: VeggieHeadline(
+                        veggie: veggie,
+                      ),
+                    )
+                ],
+              ));
   }
 }
