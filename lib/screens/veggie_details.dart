@@ -207,11 +207,12 @@ class InfoView extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Switch(
+              Switch.adaptive(
                 value: veggie.isFavorite,
                 onChanged: (value) {
                   appState.setFavourite(id, value);
                 },
+                activeColor: Theme.of(context).primaryColor,
               ),
               const SizedBox(width: 8),
               const Text('Save to Garden'),

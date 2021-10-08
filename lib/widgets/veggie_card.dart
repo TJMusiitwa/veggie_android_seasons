@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/screens/veggie_details.dart';
@@ -131,36 +132,38 @@ class VeggieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PressableCard(
-      onPressed: () {
-        Navigator.of(context).push<void>(MaterialPageRoute(
-            builder: (context) => VeggieDetails(id: veggie.id),
-            fullscreenDialog: true));
-      },
-      child: Stack(
-        children: <Widget>[
-          Semantics(
-            label: 'A card background featuring ${veggie.name}',
-            child: Hero(
-              tag: '${veggie.name}_${veggie.id}_tag',
-              child: Container(
-                height: isInSeason ? 300 : 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                  fit: BoxFit.cover,
-                  colorFilter:
-                      isInSeason ? null : VeggieStyles.desaturatedColorFilter,
-                  image: AssetImage(veggie.imageAssetPath),
-                )),
+      onPressed: () {},
+      child: OpenContainer(
+        closedBuilder: (context, action) => Stack(
+          children: <Widget>[
+            Semantics(
+              label: 'A card background featuring ${veggie.name}',
+              child: Hero(
+                tag: '${veggie.name}_${veggie.id}_tag',
+                child: Container(
+                  height: isInSeason ? 300 : 150,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter:
+                        isInSeason ? null : VeggieStyles.desaturatedColorFilter,
+                    image: AssetImage(veggie.imageAssetPath),
+                  )),
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _buildDetails(),
-          )
-        ],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _buildDetails(),
+            )
+          ],
+        ),
+        openBuilder: (context, action) => VeggieDetails(id: veggie.id),
+        tappable: true,
+        transitionType: ContainerTransitionType.fade,
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
