@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart'
     show CupertinoSegmentedControl, CupertinoSlidingSegmentedControl;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/app_state.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
