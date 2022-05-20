@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/data/veggie_preferences.dart';
@@ -87,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
       label: 'Calorie Target',
       icon: const SettingsIcon(
         backgroundColor: VeggieStyles.iconBlue,
-        icon: FontAwesomeIcons.fire,
+        icon: Icons.whatshot_outlined,
       ),
       content: FutureBuilder<int>(
         future: prefs.desiredCalories,
@@ -117,7 +116,7 @@ class SettingsScreen extends StatelessWidget {
       subtitle: 'What types of veggies you prefer!',
       icon: const SettingsIcon(
         backgroundColor: VeggieStyles.iconGold,
-        icon: FontAwesomeIcons.thumbsUp,
+        icon: Icons.thumb_up_outlined,
       ),
       content: SettingsNavigationIndicator(),
       onPress: () {
