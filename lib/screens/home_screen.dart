@@ -41,14 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.settings), label: 'Settings'),
         ],
         currentIndex: _currentPage,
-        fixedColor: Colors.red,
-        unselectedItemColor: Colors.grey,
+        useLegacyColorScheme: false,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        unselectedItemColor: Theme.of(context).disabledColor,
         type: BottomNavigationBarType.fixed,
-        onTap: (int index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
+        onTap: (int index) => setState(() => _currentPage = index),
       ),
     );
   }

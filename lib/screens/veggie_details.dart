@@ -211,7 +211,7 @@ class InfoView extends StatelessWidget {
                 onChanged: (value) {
                   appState.setFavourite(id, value);
                 },
-                activeColor: Theme.of(context).primaryColor,
+                activeColor: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 8),
               const Text('Save to Garden'),
@@ -290,7 +290,7 @@ class _VeggieDetailsState extends State<VeggieDetails> {
                           0: Text('Facts & Info'),
                           1: Text('Trivia'),
                         },
-                        thumbColor: Theme.of(context).primaryColorLight,
+                        thumbColor: Theme.of(context).colorScheme.primary,
                         groupValue: _selectedViewIndex,
                         onValueChanged: (value) =>
                             setState(() => _selectedViewIndex = value as int),
@@ -302,7 +302,7 @@ class _VeggieDetailsState extends State<VeggieDetails> {
                         },
                         groupValue: _selectedViewIndex,
                         onValueChanged: (value) =>
-                            setState(() => _selectedViewIndex = value as int),
+                            setState(() => _selectedViewIndex = value),
                       ),
                 _selectedViewIndex == 0
                     ? InfoView(id: widget.id)

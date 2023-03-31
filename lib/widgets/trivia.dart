@@ -166,8 +166,8 @@ class _TriviaViewState extends State<TriviaView> {
               child: ElevatedButton(
                 onPressed: () => _processAnswer(i),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent,
-                ),
+                    backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white),
                 child: Text(
                   currentTrivia.answers[i],
                   textAlign: TextAlign.center,

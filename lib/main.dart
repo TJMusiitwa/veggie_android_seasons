@@ -24,7 +24,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Veggie Android Seasons',
         theme: ThemeData(
-          primarySwatch: Colors.red,
+          useMaterial3: true,
+          //colorSchemeSeed: Colors.red,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+          //primarySwatch: Colors.red,
           scaffoldBackgroundColor: VeggieStyles.scaffoldBackground,
           brightness: Brightness.light,
         ),
