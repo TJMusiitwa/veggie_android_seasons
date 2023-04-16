@@ -164,7 +164,7 @@ class InfoView extends StatelessWidget {
               FutureBuilder(
                 future: prefs.preferredCategories,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Text(veggie.categoryName!.toUpperCase(),
+                  return Text(veggie.category.name.toUpperCase(),
                       style: (snapshot.hasData &&
                               snapshot.data.contains(veggie.category))
                           ? VeggieStyles.detailsPreferredCategoryText

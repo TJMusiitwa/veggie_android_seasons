@@ -167,7 +167,7 @@ class VeggieCategorySettingsScreen extends StatelessWidget {
             }
 
             items.add(SettingsItem(
-              label: veggieCategoryNames[category]!,
+              label: category.name,
               content: toggle,
             ));
           }

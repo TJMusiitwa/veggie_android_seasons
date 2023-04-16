@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart' show Color;
 
 enum VeggieCategory {
-  allium,
-  berry,
-  citrus,
-  cruciferous,
-  fern,
-  flower,
-  fruit,
-  fungus,
-  gourd,
-  leafy,
-  legume,
-  melon,
-  root,
-  stealthFruit,
-  stoneFruit,
-  tropical,
-  tuber,
-  vegetable,
+  allium('Allium'),
+  berry('Berry'),
+  citrus('Citrus'),
+  cruciferous('Cruciferous'),
+  fern('Technically a fern'),
+  flower('Flower'),
+  fruit('Fruit'),
+  fungus('Fungus'),
+  gourd('Gourd'),
+  leafy('Leafy'),
+  legume('Legume'),
+  melon('Melon'),
+  root('Root vegetable'),
+  stealthFruit('Stealth fruit'),
+  stoneFruit('Stone fruit'),
+  tropical('Tropical'),
+  tuber('Tuber'),
+  vegetable('Vegetable');
+
+  const VeggieCategory(this.name);
+  final String name;
 }
 
 enum Season {
-  winter,
-  spring,
-  summer,
-  autumn,
+  winter('Winter'),
+  spring('Spring'),
+  summer('Summer'),
+  autumn('Autumn');
+
+  const Season(this.seasonName);
+  final String seasonName;
 }
 
 class Trivia {
@@ -35,34 +41,6 @@ class Trivia {
 
   Trivia(this.question, this.answers, this.correctAnswerIndex);
 }
-
-const Map<VeggieCategory, String> veggieCategoryNames = {
-  VeggieCategory.allium: 'Allium',
-  VeggieCategory.berry: 'Berry',
-  VeggieCategory.citrus: 'Citrus',
-  VeggieCategory.cruciferous: 'Cruciferous',
-  VeggieCategory.fern: 'Technically a fern',
-  VeggieCategory.flower: 'Flower',
-  VeggieCategory.fruit: 'Fruit',
-  VeggieCategory.fungus: 'Fungus',
-  VeggieCategory.gourd: 'Gourd',
-  VeggieCategory.leafy: 'Leafy',
-  VeggieCategory.legume: 'Legume',
-  VeggieCategory.melon: 'Melon',
-  VeggieCategory.root: 'Root vegetable',
-  VeggieCategory.stealthFruit: 'Stealth fruit',
-  VeggieCategory.stoneFruit: 'Stone fruit',
-  VeggieCategory.tropical: 'Tropical',
-  VeggieCategory.tuber: 'Tuber',
-  VeggieCategory.vegetable: 'Vegetable',
-};
-
-const Map<Season, String> seasonNames = {
-  Season.winter: 'Winter',
-  Season.spring: 'Spring',
-  Season.summer: 'Summer',
-  Season.autumn: 'Autumn',
-};
 
 class Veggie {
   final int id;
@@ -93,5 +71,4 @@ class Veggie {
       required this.caloriesPerServing,
       required this.trivia,
       this.isFavorite = false});
-  String? get categoryName => veggieCategoryNames[category];
 }
