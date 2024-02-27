@@ -15,8 +15,7 @@ class ServingInfoChart extends StatelessWidget {
   final VeggiePrefs veggiePrefs;
 
   const ServingInfoChart(
-      {Key? key, required this.veggie, required this.veggiePrefs})
-      : super(key: key);
+      {super.key, required this.veggie, required this.veggiePrefs});
 
   Widget _buildVitaminText(int standardPercentage, Future<int> targetCalories) {
     return FutureBuilder<int>(
@@ -147,7 +146,7 @@ class ServingInfoChart extends StatelessWidget {
 class InfoView extends StatelessWidget {
   final int id;
 
-  const InfoView({Key? key, required this.id}) : super(key: key);
+  const InfoView({super.key, required this.id});
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
@@ -226,7 +225,7 @@ class InfoView extends StatelessWidget {
 class VeggieDetails extends StatefulWidget {
   final int id;
 
-  const VeggieDetails({Key? key, required this.id}) : super(key: key);
+  const VeggieDetails({super.key, required this.id});
   @override
   _VeggieDetailsState createState() => _VeggieDetailsState();
 }

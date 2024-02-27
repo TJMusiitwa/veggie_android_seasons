@@ -7,8 +7,8 @@ import 'package:veggie_android_seasons/veggie_styles.dart';
 class FrostedBox extends StatelessWidget {
   const FrostedBox({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 
@@ -36,8 +36,7 @@ class ColorChangingIcon extends ImplicitlyAnimatedWidget {
       {this.color = Colors.black,
       this.icon,
       this.size,
-      required Duration duration})
-      : super(duration: duration);
+      required super.duration});
 
   @override
   _ColorChangingIconState createState() => _ColorChangingIconState();
@@ -66,7 +65,7 @@ class _ColorChangingIconState
 class CloseButton extends StatefulWidget {
   final VoidCallback onPressed;
 
-  const CloseButton({Key? key, required this.onPressed}) : super(key: key);
+  const CloseButton({super.key, required this.onPressed});
   @override
   _CloseButtonState createState() => _CloseButtonState();
 }

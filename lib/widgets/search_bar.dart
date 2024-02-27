@@ -5,8 +5,8 @@ class SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
 
-  const SearchBar({Key? key, required this.controller, required this.focusNode})
-      : super(key: key);
+  const SearchBar(
+      {super.key, required this.controller, required this.focusNode});
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(

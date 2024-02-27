@@ -21,11 +21,10 @@ class SettingsIcon extends StatelessWidget {
   final IconData icon;
 
   const SettingsIcon(
-      {Key? key,
+      {super.key,
       this.backgroundColor = Colors.black,
       this.foregroundColor = Colors.white,
-      required this.icon})
-      : super(key: key);
+      required this.icon});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,13 +46,12 @@ class SettingsItem extends StatefulWidget {
   final SettingsItemCallback? onPress;
 
   const SettingsItem(
-      {Key? key,
+      {super.key,
       this.label,
       this.subtitle,
       this.icon,
       this.content,
-      this.onPress})
-      : super(key: key);
+      this.onPress});
   @override
   _SettingsItemState createState() => _SettingsItemState();
 }

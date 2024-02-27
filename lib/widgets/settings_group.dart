@@ -5,7 +5,7 @@ import 'package:veggie_android_seasons/widgets/settings_item.dart';
 class SettingsGroupHeader extends StatelessWidget {
   final String title;
 
-  const SettingsGroupHeader({Key? key, required this.title}) : super(key: key);
+  const SettingsGroupHeader({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +25,7 @@ class SettingsGroupHeader extends StatelessWidget {
 class SettingsGroupFooter extends StatelessWidget {
   final String title;
 
-  const SettingsGroupFooter({Key? key, required this.title}) : super(key: key);
+  const SettingsGroupFooter({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,8 +50,8 @@ class SettingsGroup extends StatelessWidget {
   final Widget? header, footer;
   final List<SettingsItem> items;
 
-  const SettingsGroup({Key? key, this.header, this.footer, required this.items})
-      : super(key: key);
+  const SettingsGroup(
+      {super.key, this.header, this.footer, required this.items});
   @override
   Widget build(BuildContext context) {
     final dividedItems = <Widget>[items[0]];
