@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart' show CupertinoSearchTextField;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:veggie_android_seasons/data/app_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:veggie_android_seasons/data/app_notifier.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 //import 'package:veggie_android_seasons/widgets/search_bar.dart';
@@ -67,22 +67,26 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<AppState>(context);
-
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: VeggieStyles.scaffoldBackground,
-      ),
-      child: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _createSearchBox(),
-            Expanded(
-              child: _buildSearchResults(model.searchVeggies(terms)),
-            )
-          ],
-        ),
-      ),
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            color: VeggieStyles.scaffoldBackground,
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                _createSearchBox(),
+                Expanded(
+                  child: _buildSearchResults(ref
+                      .watch(appNotifierProvider.notifier)
+                      .searchVeggies(terms)),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

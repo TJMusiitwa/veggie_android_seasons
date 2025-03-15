@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart' show Color;
 
 enum VeggieCategory {
@@ -71,4 +72,35 @@ class Veggie {
       required this.caloriesPerServing,
       required this.trivia,
       this.isFavorite = false});
+
+  Veggie copyWith({
+    int? id,
+    String? name,
+    String? imageAssetPath,
+    VeggieCategory? category,
+    String? shortDescription,
+    Color? accentColor,
+    List<Season>? seasons,
+    int? vitaminAPercentage,
+    int? vitaminCPercentage,
+    String? servingSize,
+    int? caloriesPerServing,
+    bool? isFavorite,
+    List<Trivia>? trivia,
+  }) {
+    return Veggie(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        imageAssetPath: imageAssetPath ?? this.imageAssetPath,
+        category: category ?? this.category,
+        shortDescription: shortDescription ?? this.shortDescription,
+        accentColor: accentColor ?? this.accentColor,
+        seasons: seasons ?? this.seasons,
+        vitaminAPercentage: vitaminAPercentage ?? this.vitaminAPercentage,
+        vitaminCPercentage: vitaminCPercentage ?? this.vitaminCPercentage,
+        servingSize: servingSize ?? this.servingSize,
+        caloriesPerServing: caloriesPerServing ?? this.caloriesPerServing,
+        isFavorite: isFavorite ?? this.isFavorite,
+        trivia: trivia ?? this.trivia);
+  }
 }

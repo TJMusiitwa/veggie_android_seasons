@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:veggie_android_seasons/data/app_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:veggie_android_seasons/data/app_notifier.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 
-class TriviaView extends StatefulWidget {
+class TriviaView extends ConsumerStatefulWidget {
   final int id;
 
   const TriviaView(this.id);
 
   @override
-  _TriviaViewState createState() => _TriviaViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TriviaViewState();
 }
 
 /// Possible states of the game.
@@ -20,10 +20,7 @@ enum PlayerStatus {
   wasIncorrect,
 }
 
-class _TriviaViewState extends State<TriviaView> {
-  /// Current app state. This is used to fetch veggie data.
-  late AppState appState;
-
+class _TriviaViewState extends ConsumerState<TriviaView> {
   /// The veggie trivia about which to show.
   late Veggie veggie;
 
@@ -45,11 +42,8 @@ class _TriviaViewState extends State<TriviaView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final newAppState = Provider.of<AppState>(context);
-
     setState(() {
-      appState = newAppState;
-      veggie = appState.getVeggie(widget.id);
+      veggie = ref.watch(appNotifierProvider.notifier).getVeggie(widget.id);
     });
   }
 
@@ -62,7 +56,7 @@ class _TriviaViewState extends State<TriviaView> {
 
     if (oldWidget.id != widget.id) {
       setState(() {
-        veggie = appState.getVeggie(widget.id);
+        veggie = ref.watch(appNotifierProvider.notifier).getVeggie(widget.id);
       });
 
       _resetGame();

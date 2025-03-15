@@ -1,77 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
-import 'package:veggie_android_seasons/data/veggie_preferences.dart';
+import 'package:veggie_android_seasons/data/veggie_preferences_notifier.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 import 'package:veggie_android_seasons/widgets/settings_group.dart';
 import 'package:veggie_android_seasons/widgets/settings_item.dart';
 
-class CalorieSettingsScreen extends StatelessWidget {
+class CalorieSettingsScreen extends ConsumerWidget {
   static const max = 1000;
   static const min = 2600;
   static const step = 200;
   @override
-  Widget build(BuildContext context) {
-    final model = Provider.of<VeggiePrefs>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Calorie Settings'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          FutureBuilder(
-            future: model.desiredCalories,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              final steps = <SettingsItem>[];
-
-              for (var cals = max; cals < min; cals += step) {
-                steps.add(
-                  SettingsItem(
-                      label: cals.toString(),
-                      icon: SettingsIcon(
-                        icon: Icons.check,
-                        foregroundColor:
-                            snapshot.hasData && snapshot.data == cals
-                                ? Colors.blueAccent
-                                : VeggieStyles.transparentColor,
-                        backgroundColor: VeggieStyles.transparentColor,
-                      ),
-                      onPress: () {
-                        if (snapshot.hasData) {
-                          model.setDesiredCalories(cals);
-                        }
-                      }),
-                );
-              }
-              return SettingsGroup(
-                items: steps,
-                header: const SettingsGroupHeader(
-                    title: 'Available calorie levels'),
-                footer: const SettingsGroupFooter(
-                    title: 'These are used for serving calculations'),
-              );
-            },
-          ),
+      appBar: AppBar(title: const Text('Calorie Settings')),
+      body: SettingsGroup(
+        items: [
+          for (var cals = max; cals < min; cals += step) ...{
+            SettingsItem(
+                label: cals.toString(),
+                icon: SettingsIcon(
+                  icon: Icons.check,
+                  foregroundColor: ref.watch(caloriesProvider) == cals
+                      ? Colors.blueAccent
+                      : VeggieStyles.transparentColor,
+                  backgroundColor: VeggieStyles.transparentColor,
+                ),
+                onPress: () {
+                  ref
+                      .read(veggiePrefProvider.notifier)
+                      .setDesiredCalories(cals);
+                })
+          }
         ],
+        header: const SettingsGroupHeader(title: 'Available calorie levels'),
+        footer: const SettingsGroupFooter(
+            title: 'These are used for serving calculations'),
       ),
     );
   }
 }
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final prefs = Provider.of<VeggiePrefs>(context);
-    return Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ColoredBox(
       color: VeggieStyles.scaffoldBackground,
       child: CustomScrollView(
-        slivers: <Widget>[
+        slivers: [
           SliverSafeArea(
             sliver: SliverList(
               delegate: SliverChildListDelegate(<Widget>[
                 SettingsGroup(items: [
-                  _buildCaloriesItem(context, prefs),
-                  _buildCategoriesItem(context, prefs)
+                  _buildCaloriesItem(context, ref.watch(caloriesProvider)),
+                  _buildCategoriesItem(context)
                 ])
               ]),
             ),
@@ -81,24 +63,19 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  SettingsItem _buildCaloriesItem(BuildContext context, VeggiePrefs prefs) {
+  SettingsItem _buildCaloriesItem(BuildContext context, int desiredCalories) {
     return SettingsItem(
       label: 'Calorie Target',
       icon: const SettingsIcon(
         backgroundColor: VeggieStyles.iconBlue,
         icon: Icons.whatshot_outlined,
       ),
-      content: FutureBuilder<int>(
-        future: prefs.desiredCalories,
-        builder: (context, snapshot) {
-          return Row(
-            children: [
-              Text(snapshot.data?.toString() ?? ''),
-              const SizedBox(width: 8),
-              SettingsNavigationIndicator(),
-            ],
-          );
-        },
+      content: Row(
+        children: [
+          Text(desiredCalories.toString()),
+          const SizedBox(width: 8),
+          SettingsNavigationIndicator(),
+        ],
       ),
       onPress: () {
         Navigator.of(context).push<void>(
@@ -110,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  SettingsItem _buildCategoriesItem(BuildContext context, VeggiePrefs prefs) {
+  SettingsItem _buildCategoriesItem(BuildContext context) {
     return SettingsItem(
       label: 'Preferred Categories',
       subtitle: 'What types of veggies you prefer!',
@@ -130,51 +107,36 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class VeggieCategorySettingsScreen extends StatelessWidget {
+class VeggieCategorySettingsScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final model = Provider.of<VeggiePrefs>(context);
-    final currentPrefs = model.preferredCategories;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentPrefs = ref.watch(preferredCategoriesProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preferred Categories'),
-      ),
-      body: FutureBuilder<Set<VeggieCategory>>(
-        future: currentPrefs,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          final items = <SettingsItem>[];
-          for (final category in VeggieCategory.values) {
-            Switch toggle;
-            // It's possible that category data hasn't loaded from shared prefs
-            // yet, so display it if possible and fall back to disabled switches
-            // otherwise.
-            if (snapshot.hasData) {
-              toggle = Switch(
-                value: snapshot.data.contains(category),
-                onChanged: (value) {
-                  if (value) {
-                    model.addPreferredCategory(category);
-                  } else {
-                    model.removePreferredCategory(category);
-                  }
-                },
-              );
-            } else {
-              toggle = const Switch(
-                value: false,
-                onChanged: null,
-              );
-            }
-
-            items.add(SettingsItem(
-              label: category.name,
-              content: toggle,
-            ));
-          }
-          return ListView(
-            children: <Widget>[SettingsGroup(items: items)],
-          );
-        },
+      appBar: AppBar(title: const Text('Preferred Categories')),
+      body: ListView(
+        children: [
+          SettingsGroup(items: [
+            for (var category in VeggieCategory.values)
+              SettingsItem(
+                label: category.name,
+                content: currentPrefs.isNotEmpty
+                    ? Switch.adaptive(
+                        value: currentPrefs.contains(category),
+                        onChanged: (value) {
+                          if (value) {
+                            ref
+                                .read(veggiePrefProvider.notifier)
+                                .addPreferredCategory(category);
+                          } else {
+                            ref
+                                .read(veggiePrefProvider.notifier)
+                                .removePreferredCategory(category);
+                          }
+                        })
+                    : const Switch.adaptive(value: false, onChanged: null),
+              ),
+          ])
+        ],
       ),
     );
   }

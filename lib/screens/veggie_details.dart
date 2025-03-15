@@ -3,37 +3,30 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart'
     show CupertinoSegmentedControl, CupertinoSlidingSegmentedControl;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:veggie_android_seasons/data/app_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:veggie_android_seasons/data/app_notifier.dart';
 import 'package:veggie_android_seasons/data/veggie.dart';
-import 'package:veggie_android_seasons/data/veggie_preferences.dart';
+import 'package:veggie_android_seasons/data/veggie_preferences_notifier.dart';
 import 'package:veggie_android_seasons/veggie_styles.dart';
 import 'package:veggie_android_seasons/widgets/trivia.dart';
 
-class ServingInfoChart extends StatelessWidget {
+class ServingInfoChart extends ConsumerWidget {
   final Veggie veggie;
-  final VeggiePrefs veggiePrefs;
 
-  const ServingInfoChart(
-      {super.key, required this.veggie, required this.veggiePrefs});
+  const ServingInfoChart({super.key, required this.veggie});
 
-  Widget _buildVitaminText(int standardPercentage, Future<int> targetCalories) {
-    return FutureBuilder<int>(
-      future: targetCalories,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final target = snapshot.data ?? 2000;
-        final percent = standardPercentage * 2000 ~/ target;
-        return Text(
-          '$percent% DV',
-          textAlign: TextAlign.end,
-          style: VeggieStyles.detailsServingValueText,
-        );
-      },
+  Widget _buildVitaminText(int standardPercentage, WidgetRef ref) {
+    final target = ref.watch(caloriesProvider);
+    final percent = standardPercentage * 2000 ~/ target;
+    return Text(
+      '$percent% DV',
+      textAlign: TextAlign.end,
+      style: VeggieStyles.detailsServingValueText,
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(children: [
       const SizedBox(
         height: 16,
@@ -98,10 +91,7 @@ class ServingInfoChart extends StatelessWidget {
                       ),
                     ),
                     TableCell(
-                      child: _buildVitaminText(
-                        veggie.vitaminAPercentage,
-                        veggiePrefs.desiredCalories,
-                      ),
+                      child: _buildVitaminText(veggie.vitaminAPercentage, ref),
                     ),
                   ],
                 ),
@@ -114,10 +104,7 @@ class ServingInfoChart extends StatelessWidget {
                       ),
                     ),
                     TableCell(
-                      child: _buildVitaminText(
-                        veggie.vitaminCPercentage,
-                        veggiePrefs.desiredCalories,
-                      ),
+                      child: _buildVitaminText(veggie.vitaminCPercentage, ref),
                     ),
                   ],
                 ),
@@ -125,15 +112,10 @@ class ServingInfoChart extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: FutureBuilder(
-                future: veggiePrefs.desiredCalories,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Text(
-                    'Percent daily values based on a diet of '
-                    '${snapshot.data ?? '2,000'} calories.',
-                    style: VeggieStyles.detailsServingNoteText,
-                  );
-                },
+              child: Text(
+                'Percent daily values based on a diet of '
+                '${ref.watch(caloriesProvider)} calories.',
+                style: VeggieStyles.detailsServingNoteText,
               ),
             )
           ],
@@ -143,38 +125,30 @@ class ServingInfoChart extends StatelessWidget {
   }
 }
 
-class InfoView extends StatelessWidget {
+class InfoView extends ConsumerWidget {
   final int id;
 
   const InfoView({super.key, required this.id});
   @override
-  Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
-    final prefs = Provider.of<VeggiePrefs>(context);
-    final veggie = appState.getVeggie(id);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final veggie = ref.watch(appNotifierProvider.notifier).getVeggie(id);
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
+        children: [
           Row(
             mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              FutureBuilder(
-                future: prefs.preferredCategories,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Text(veggie.category.name.toUpperCase(),
-                      style: (snapshot.hasData &&
-                              snapshot.data.contains(veggie.category))
-                          ? VeggieStyles.detailsPreferredCategoryText
-                          : VeggieStyles.detailsCategoryText);
-                },
-              ),
+            children: [
+              Text(veggie.category.name.toUpperCase(),
+                  style: (ref
+                          .watch(preferredCategoriesProvider)
+                          .contains(veggie.category))
+                      ? VeggieStyles.detailsPreferredCategoryText
+                      : VeggieStyles.detailsCategoryText),
               const Spacer(),
               for (Season season in veggie.seasons) ...[
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Padding(
                   padding: VeggieStyles.seasonIconPadding[season]!,
                   child: Icon(
@@ -185,31 +159,23 @@ class InfoView extends StatelessWidget {
               ]
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            veggie.name,
-            style: VeggieStyles.detailsTitleText,
-          ),
+          const SizedBox(height: 8),
+          Text(veggie.name, style: VeggieStyles.detailsTitleText),
           const SizedBox(height: 8),
           Text(
             veggie.shortDescription,
             style: VeggieStyles.detailsDescriptionText,
           ),
-          ServingInfoChart(
-            veggie: veggie,
-            veggiePrefs: prefs,
-          ),
+          ServingInfoChart(veggie: veggie),
           const SizedBox(height: 24),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Switch.adaptive(
                 value: veggie.isFavorite,
-                onChanged: (value) {
-                  appState.setFavourite(id, value);
-                },
+                onChanged: (value) => ref
+                    .read(appNotifierProvider.notifier)
+                    .setFavourite(id, value),
                 activeColor: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 8),
@@ -222,15 +188,15 @@ class InfoView extends StatelessWidget {
   }
 }
 
-class VeggieDetails extends StatefulWidget {
+class VeggieDetails extends ConsumerStatefulWidget {
   final int id;
 
   const VeggieDetails({super.key, required this.id});
   @override
-  _VeggieDetailsState createState() => _VeggieDetailsState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _VeggieDetailsState();
 }
 
-class _VeggieDetailsState extends State<VeggieDetails> {
+class _VeggieDetailsState extends ConsumerState<VeggieDetails> {
   int _selectedViewIndex = 0;
   late List<bool> isSelected;
   @override
@@ -239,22 +205,18 @@ class _VeggieDetailsState extends State<VeggieDetails> {
     isSelected = [true, false];
   }
 
-  Widget _buildHeader(BuildContext context, AppState model) {
-    final veggie = model.getVeggie(widget.id);
-
+  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    final veggie = ref.watch(appNotifierProvider.notifier).getVeggie(widget.id);
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 3,
+      height: MediaQuery.sizeOf(context).height / 3,
       child: Stack(
-        children: <Widget>[
+        children: [
           Positioned(
             right: 0,
             left: 0,
             child: Hero(
               tag: '${veggie.name}_${veggie.id}_tag',
-              child: Image.asset(
-                veggie.imageAssetPath,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(veggie.imageAssetPath, fit: BoxFit.cover),
             ),
           ),
           const Positioned(
@@ -269,20 +231,17 @@ class _VeggieDetailsState extends State<VeggieDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _buildHeader(context, appState),
+          _buildHeader(context, ref),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.only(left: 20, right: 20),
-              children: <Widget>[
-                const SizedBox(
-                  height: 20,
-                ),
+              children: [
+                const SizedBox(height: 20),
                 Platform.isIOS
                     ? CupertinoSlidingSegmentedControl(
                         children: const {
