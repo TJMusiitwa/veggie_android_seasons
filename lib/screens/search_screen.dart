@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart' show CupertinoSearchTextField;
+import 'package:cupertino_ui/cupertino_ui.dart' show CupertinoSearchTextField;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:veggie_android_seasons/data/app_notifier.dart';

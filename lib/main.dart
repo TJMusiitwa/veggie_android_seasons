@@ -1,3 +1,4 @@
+import 'package:cupertino_ui/cupertino_ui.dart' as cupertino;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Veggie Android Seasons',
+      localizationsDelegates: const [cupertino.DefaultCupertinoLocalizations.delegate],
       theme: ThemeData(
         //colorSchemeSeed: Colors.red,
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),

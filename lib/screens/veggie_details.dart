@@ -1,6 +1,7 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart'
+import 'package:cupertino_ui/cupertino_ui.dart'
     show CupertinoSegmentedControl, CupertinoSlidingSegmentedControl;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -151,7 +152,7 @@ class InfoView extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Padding(
                   padding: VeggieStyles.seasonIconPadding[season]!,
-                  child: Icon(
+                  child: FaIcon(
                     VeggieStyles.seasonIconData[season],
                     color: VeggieStyles.seasonColors[season],
                   ),
@@ -176,7 +177,7 @@ class InfoView extends ConsumerWidget {
                 onChanged: (value) => ref
                     .read(appNotifierProvider.notifier)
                     .setFavourite(id, value),
-                activeColor: Theme.of(context).colorScheme.primary,
+                activeThumbColor: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 8),
               const Text('Save to Garden'),

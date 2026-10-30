@@ -71,8 +71,7 @@ class SettingsGroup extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // ignore: unnecessary_null_comparison
-          if (header != null) header!,
+          ?header,
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -92,8 +91,7 @@ class SettingsGroup extends StatelessWidget {
               children: dividedItems,
             ),
           ),
-          // ignore: unnecessary_null_comparison
-          if (footer != null) footer!,
+          ?footer,
         ],
       ),
     );
